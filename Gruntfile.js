@@ -49,7 +49,7 @@ module.exports = function(grunt) {
   
   grunt.registerTask('test', ['jshint', 'qunit']);
   
-  grunt.registerTask('build', ['test', 'copy:dist', 'uglify:dist']);
+  grunt.registerTask('build', ['copy:dist', 'uglify:dist']);
   
   grunt.registerTask('default', ['test']);
   
