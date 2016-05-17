@@ -1,0 +1,23 @@
+{
+  "name": "kicks-app-jquery-plugin",
+  "version": "0.0.1",
+  "description": "JQuery Plugin Template",
+  "authors": [
+    "Rafael Nowrotek <mail@benignware.com>"
+  ],
+  "main": "src/jquery.plugin.js",
+  "keywords": [
+    "jquery-plugin"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "*"
+  }
+}
