@@ -120,10 +120,8 @@
 
       if (top >= viewTop && top <= viewBottom || bottom >= viewTop && bottom <= viewBottom) {
         // Element is in view
-        top = top + offset;
-        bottom = bottom - offset;
-        if (revealed.indexOf(element) === -1 && (top >= viewTop && top <= viewBottom || bottom >= viewTop && bottom <= viewBottom)) {
-          // Element has not been revealed yet
+        if (revealed.indexOf(element) === -1 && (top >= viewTop && top <= viewBottom - offset || bottom >= viewTop && bottom <= viewBottom - offset)) {
+          // Element is in view - offset and it has not been revealed yet 
           revealed.push(element);
           queue.push(element);
           if (!queueIsRunning) {

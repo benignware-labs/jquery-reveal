@@ -10,8 +10,8 @@
     factory(jQuery);
   }
 }(function ($) {
- 
- 
+
+
   // http://stackoverflow.com/questions/4774746/jquery-ajax-wait-until-all-images-are-loaded
   function imagesLoaded(element) {
 
@@ -22,7 +22,7 @@
     if (!$imgs.length) {return $.Deferred().resolve().promise();}
 
     // for each image, add a deferred object to the array which resolves when the image is loaded (or if loading fails)
-    var dfds = [];  
+    var dfds = [];
     $imgs.each(function(){
 
         var dfd = $.Deferred();
@@ -42,8 +42,8 @@
     // IE - when all the images are loaded
     return $.when.apply($,dfds);
   }
- 
-  
+
+
   function inView(element, offset) {
     offset = offset || 0;
     var viewTop = $(window).scrollTop();
@@ -52,7 +52,7 @@
     var bottom = top + $(element).height() - offset;
     return (top >= viewTop && top <= viewBottom || bottom >= viewTop && bottom <= viewBottom);
   }
-  
+
   var
     elements = [],
     revealed = [],
@@ -83,29 +83,32 @@
       }
       var element = current;
       imagesLoaded().then(function() {
-        $(element).css('visibility', '');
+        $(element).css('opacity', '');
         // Apply animation only if the element is still in view
         if (inView(element)) {
-          $(element).addClass(options['class']);
+          var animationClass = $(element).data('animation-class') || options.animationClass;
+          var animatedClass = $(element).data('animated-class') || options.animatedClass;
+          $(element).addClass(animatedClass);
+          $(element).addClass(animationClass);
         }
       });
       window.setTimeout(function() {
         next();
       }, delay);
     };
-  
+
   function update() {
-    
+
     var viewTop = $(window).scrollTop();
     var viewBottom = viewTop + $(window).innerHeight();
-    
+
     var scrollDelta = viewTop - scrollTop;
     scrollTop = viewTop;
-    
+
     if (scrollDelta === 0) {
       return;
     }
-    
+
     elements.forEach(function(element, index) {
       var
         options = $(element).data('reveal').getOptions(),
@@ -114,13 +117,11 @@
         height = bounds.height,
         top = viewTop + bounds.top,
         bottom = top + height;
-        
+
       if (top >= viewTop && top <= viewBottom || bottom >= viewTop && bottom <= viewBottom) {
-        // Element is in view 
-        top = top + offset;
-        bottom = bottom - offset;
-        if (revealed.indexOf(element) === -1 && (top >= viewTop && top <= viewBottom || bottom >= viewTop && bottom <= viewBottom)) {
-          // Element has not been revealed yet
+        // Element is in view
+        if (revealed.indexOf(element) === -1 && (top >= viewTop && top <= viewBottom - offset || bottom >= viewTop && bottom <= viewBottom - offset)) {
+          // Element is in view - offset and it has not been revealed yet 
           revealed.push(element);
           queue.push(element);
           if (!queueIsRunning) {
@@ -131,8 +132,9 @@
         var above = viewTop > bottom && height > 0;
         if (viewTop > bottom && height > 0) {
           // Above view, abort
-          $(element).removeClass(options['class']);
-          $(element).css('visibility', '');
+          var animationClass = $(element).data('animation-class') || options.animationClass;
+          $(element).removeClass(animationClass);
+          $(element).css('opacity', '');
           elements.splice(index, 1);
           // Remove queued element
           var queueIndex = queue.indexOf(element);
@@ -147,20 +149,20 @@
         }
       }
     });
-    
+
   }
-  
+
   var scrollTimeout = null;
   $(window).on('scroll', function(e) {
     scrollTimeout = window.setTimeout(function() {
       update();
     }, 40);
   });
-  
+
   /**
    * JQuery Plugin
    */
-    
+
   function Reveal(element, options) {
     // Init plugin instance
     var
@@ -178,17 +180,17 @@
       height = bounds.height,
       top = viewTop + bounds.top,
       bottom = top + height;
-    
+
     if (viewBottom < top && elements.indexOf(element) === -1) {
       // The element is up to be revealed
-      $(element).css('visibility', 'hidden');
+      $(element).css('opacity', '0');
       elements.push(element);
     }
 
     this.getOptions = function() {
       return $.extend({}, opts);
     };
-    
+
     /**
      * Updates the component
      * @param {Object} options
@@ -198,13 +200,13 @@
       // Update global logic
       update();
     };
-   
+
     // Initial update
     this.update($.extend(true, {
       delay: 0
     }, options, $element.data()));
   }
-  
+
   // Add Plugin to registry
   $.fn.reveal = function() {
     var
