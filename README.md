@@ -7,8 +7,10 @@ Usage
 
 ```js
 $('.reveal').reveal({
-  "class": 'bounceIn animated',
-  delay: 400
+  animationClass: 'bounceIn',
+  animatedClass: 'animated'
+  delay: 250,
+  offset: 150
 });
 ```
 
@@ -19,9 +21,18 @@ Options
     <th>Name</th><th>Description</th>
   </tr>
   <tr>
-    <td>class</td><td>The css class which triggers the animation</td>
+    <td>animationClass</td><td>The css class which refers to the css animation</td>
   </tr>
   <tr>
-    <td>delay</td><td>Delay offset after which the animation gets triggered</td>
+    <td>animatedClass</td><td>The css class which triggers the animation</td>
+  </tr>
+  <tr>
+    <td>delay</td><td>Delay is ms after which the animation gets triggered</td>
+  </tr>
+  <tr>
+    <td>offset</td><td>Screen offset to bottom viewport</td>
+  </tr>
+  <tr>
+    <td>skipInitial</td><td>Skip animations for the initial viewport. Defaults to `false`</td>
   </tr>
 </table>
