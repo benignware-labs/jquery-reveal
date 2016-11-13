@@ -1,6 +1,6 @@
 test("default", function(assert) {
   assert.ok(
-    $('#qunit-fixture').plugin().data('plugin'),
+    $('#qunit-fixture').reveal().data('reveal'),
     "Instance should have been created.'"
   );
 });
